@@ -38,13 +38,17 @@ export default function UserList() {
   });
 
   async function handlePrefetchUser(userId: string) {
-    await queryClient.prefetchQuery(['user', userId], async () => {
-      const response = await api.get(`users/${userId}`)
+    await queryClient.prefetchQuery(
+      ["user", userId],
+      async () => {
+        const response = await api.get(`users/${userId}`);
 
-      return response.data;
-    }, {
-      staleTime: 1000 * 60 * 10, // 10 minutos
-    });
+        return response.data;
+      },
+      {
+        staleTime: 1000 * 60 * 10, // 10 minutos
+      }
+    );
   }
 
   return (
@@ -105,8 +109,11 @@ export default function UserList() {
                       </Td>
                       <Td>
                         <Box>
-                          <ChakraLink color="purple.400" onMouseEnter={() => handlePrefetchUser(user.id)} >
-                          <Text fontWeight="bold">{user.name}</Text>
+                          <ChakraLink
+                            color="purple.400"
+                            onMouseEnter={() => handlePrefetchUser(user.id)}
+                          >
+                            <Text fontWeight="bold">{user.name}</Text>
                           </ChakraLink>
                           <Text fontSize="sm" color="gray.300">
                             {user.email}
@@ -142,3 +149,13 @@ export default function UserList() {
     </Box>
   );
 }
+
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const { users, totalCount } = await getUsers(1);
+
+//   return {
+//     props: {
+//       users,
+//     },
+//   };
+// };
